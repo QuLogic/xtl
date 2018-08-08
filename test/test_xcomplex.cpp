@@ -254,12 +254,21 @@ namespace xtl
     TEST(xcomplex, power)
     {
         complex_type c(1., 2.);
+        complex_type r, sr;
         std::complex<double> sc(c);
         double d = 1.5;
-        EXPECT_EQ(pow(c, c), complex_type(std::pow(sc, sc)));
-        EXPECT_EQ(pow(c, d), complex_type(std::pow(sc, d)));
-        EXPECT_EQ(pow(d, c), complex_type(std::pow(d, sc)));
-        EXPECT_EQ(sqrt(c), complex_type(std::sqrt(sc)));
+#define EXPECT_COMPLEX_EQ(a, b) \
+        do { \
+                r = a; \
+                sr = b; \
+                EXPECT_DOUBLE_EQ(r.real(), sr.real()); \
+                EXPECT_DOUBLE_EQ(r.imag(), sr.imag()); \
+        } while (0)
+        EXPECT_COMPLEX_EQ(pow(c, c), complex_type(std::pow(sc, sc)));
+        EXPECT_COMPLEX_EQ(pow(c, d), complex_type(std::pow(sc, d)));
+        EXPECT_COMPLEX_EQ(pow(d, c), complex_type(std::pow(d, sc)));
+        EXPECT_COMPLEX_EQ(sqrt(c), complex_type(std::sqrt(sc)));
+#undef EXPECT_COMPLEX_EQ
     }
 
     TEST(xcomplex, trigonometric)
